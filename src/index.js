@@ -16,6 +16,7 @@
  */
 
 // import '@tensorflow/tfjs-backend-webgl';
+// import '@tensorflow-models/face-detection';
 
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 
@@ -23,7 +24,6 @@ tfjsWasm.setWasmPaths(
     `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${
         tfjsWasm.version_wasm}/dist/`);
 
-// import '@tensorflow-models/face-detection';
 
 import {Camera} from './camera';
 import {setupDatGui} from './option_panel';

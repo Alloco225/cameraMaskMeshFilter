@@ -15,8 +15,8 @@
  * =============================================================================
  */
 
-// import '@tensorflow/tfjs-backend-webgl';
-// import '@tensorflow-models/face-detection';
+import '@tensorflow/tfjs-backend-webgl';
+import '@tensorflow-models/face-detection';
 
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 

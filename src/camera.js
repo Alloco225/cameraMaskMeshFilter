@@ -23,6 +23,8 @@ export class Camera {
     this.video = document.getElementById('video');
     this.canvas = document.getElementById('output');
     this.ctx = this.canvas.getContext('2d');
+
+    console.log("Camera ", this.video, this.canvas, this.ctx)
   }
 
   /**
@@ -30,42 +32,42 @@ export class Camera {
    * @param cameraParam From app `STATE.camera`.
    */
   static async setupCamera(cameraParam) {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      throw new Error(
-          'Browser API navigator.mediaDevices.getUserMedia not available');
-    }
+    // if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    //   throw new Error(
+    //       'Browser API navigator.mediaDevices.getUserMedia not available');
+    // }
 
-    const {targetFPS, sizeOption} = cameraParam;
-    const $size = VIDEO_SIZE[sizeOption];
+    // const {targetFPS, sizeOption} = cameraParam;
+    // const $size = VIDEO_SIZE[sizeOption];
 
-    const videoConfig = {
-      'audio': false,
-      'video': {
-        facingMode: 'user',
-        // Only setting the video to a specified size for large screen, on
-        // mobile devices accept the default size.
-        // width: isMobile() ? VIDEO_SIZE['360 X 270'].width : $size.width,
-        // height: isMobile() ? VIDEO_SIZE['360 X 270'].height : $size.height,
-        width: $size.width,
-        height: $size.height,
-        // width: 360,
-        // height: 270,
-        frameRate: {
-          ideal: targetFPS,
-        },
-      },
-    };
+    // const videoConfig = {
+    //   'audio': false,
+    //   'video': {
+    //     facingMode: 'user',
+    //     // Only setting the video to a specified size for large screen, on
+    //     // mobile devices accept the default size.
+    //     // width: isMobile() ? VIDEO_SIZE['360 X 270'].width : $size.width,
+    //     // height: isMobile() ? VIDEO_SIZE['360 X 270'].height : $size.height,
+    //     width: $size.width,
+    //     height: $size.height,
+    //     // width: 360,
+    //     // height: 270,
+    //     frameRate: {
+    //       ideal: targetFPS,
+    //     },
+    //   },
+    // };
 
-    const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
+    // const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
 
     const camera = new Camera();
-    camera.video.srcObject = stream;
+    // camera.video.srcObject = stream;
 
-    await new Promise((resolve) => {
-      camera.video.onloadedmetadata = () => {
-        resolve(video);
-      };
-    });
+    // await new Promise((resolve) => {
+    //   camera.video.onloadedmetadata = () => {
+    //     resolve(video);
+    //   };
+    // });
 
     camera.video.play();
 
@@ -86,8 +88,10 @@ export class Camera {
   }
 
   drawCtx() {
-    this.ctx.drawImage(
-        this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
+    console.log('====================================');
+    console.log("drawCtx");
+    console.log('====================================');
+    this.ctx.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
   }
 
   drawResults(faces, triangulateMesh, boundingBox) {

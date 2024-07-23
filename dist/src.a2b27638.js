@@ -90151,9 +90151,9 @@ ENV.registerFlag('WASM_HAS_MULTITHREAD_SUPPORT', async () => {
   }
 });
 },{"@tensorflow/tfjs-core":"node_modules/@tensorflow/tfjs-core/dist/index.js"}],"node_modules/@tensorflow/tfjs-backend-wasm/wasm-out/tfjs-backend-wasm-threaded-simd.js":[function(require,module,exports) {
-var __filename = "/Users/amane/Documents/A++/AMANE/camera.amane.dev/node_modules/@tensorflow/tfjs-backend-wasm/wasm-out/tfjs-backend-wasm-threaded-simd.js";
+var __filename = "/Users/amane/Documents/A++/AMANE/CAMERA/camera-filter/node_modules/@tensorflow/tfjs-backend-wasm/wasm-out/tfjs-backend-wasm-threaded-simd.js";
 var process = require("process");
-var __dirname = "/Users/amane/Documents/A++/AMANE/camera.amane.dev/node_modules/@tensorflow/tfjs-backend-wasm/wasm-out";
+var __dirname = "/Users/amane/Documents/A++/AMANE/CAMERA/camera-filter/node_modules/@tensorflow/tfjs-backend-wasm/wasm-out";
 var global = arguments[3];
 var define;
 
@@ -90181,9 +90181,9 @@ else if (typeof exports === 'object')
 },{"fs":"node_modules/parcel-bundler/src/builtins/_empty.js","path":"node_modules/parcel-bundler/src/builtins/_empty.js","worker_threads":"node_modules/parcel-bundler/src/builtins/_empty.js","perf_hooks":"node_modules/parcel-bundler/src/builtins/_empty.js","os":"node_modules/parcel-bundler/src/builtins/_empty.js","process":"node_modules/process/browser.js"}],"node_modules/@tensorflow/tfjs-backend-wasm/wasm-out/tfjs-backend-wasm-threaded-simd.worker.js":[function(require,module,exports) {
 module.exports.wasmWorkerContents = `"use strict";var Module={};var ENVIRONMENT_IS_NODE=typeof process=="object"&&typeof process.versions=="object"&&typeof process.versions.node=="string";if(ENVIRONMENT_IS_NODE){var nodeWorkerThreads=require("worker_threads");var parentPort=nodeWorkerThreads.parentPort;parentPort.on("message",data=>onmessage({data:data}));var fs=require("fs");Object.assign(global,{self:global,require:require,Module:Module,location:{href:__filename},Worker:nodeWorkerThreads.Worker,importScripts:function(f){(0,eval)(fs.readFileSync(f,"utf8")+"//# sourceURL="+f)},postMessage:function(msg){parentPort.postMessage(msg)},performance:global.performance||{now:function(){return Date.now()}}})}var initializedJS=false;var pendingNotifiedProxyingQueues=[];function threadPrintErr(){var text=Array.prototype.slice.call(arguments).join(" ");if(ENVIRONMENT_IS_NODE){fs.writeSync(2,text+"\n");return}console.error(text)}function threadAlert(){var text=Array.prototype.slice.call(arguments).join(" ");postMessage({cmd:"alert",text:text,threadId:Module["_pthread_self"]()})}var err=threadPrintErr;self.alert=threadAlert;Module["instantiateWasm"]=(info,receiveInstance)=>{var instance=new WebAssembly.Instance(Module["wasmModule"],info);receiveInstance(instance);Module["wasmModule"]=null;return instance.exports};self.onunhandledrejection=e=>{throw e.reason??e};self.startWorker=instance=>{Module=instance;postMessage({"cmd":"loaded"})};self.onmessage=e=>{try{if(e.data.cmd==="load"){Module["wasmModule"]=e.data.wasmModule;for(const handler of e.data.handlers){Module[handler]=function(){postMessage({cmd:"callHandler",handler:handler,args:[...arguments]})}}Module["wasmMemory"]=e.data.wasmMemory;Module["buffer"]=Module["wasmMemory"].buffer;Module["ENVIRONMENT_IS_PTHREAD"]=true;if(typeof e.data.urlOrBlob=="string"){importScripts(e.data.urlOrBlob)}else{var objectUrl=URL.createObjectURL(e.data.urlOrBlob);importScripts(objectUrl);URL.revokeObjectURL(objectUrl)}WasmBackendModuleThreadedSimd(Module)}else if(e.data.cmd==="run"){Module["__emscripten_thread_init"](e.data.pthread_ptr,0,0,1);Module["establishStackSpace"]();Module["PThread"].receiveObjectTransfer(e.data);Module["PThread"].threadInitTLS();if(!initializedJS){pendingNotifiedProxyingQueues.forEach(queue=>{Module["executeNotifiedProxyingQueue"](queue)});pendingNotifiedProxyingQueues=[];initializedJS=true}try{Module["invokeEntryPoint"](e.data.start_routine,e.data.arg)}catch(ex){if(ex!="unwind"){if(ex instanceof Module["ExitStatus"]){if(Module["keepRuntimeAlive"]()){}else{Module["__emscripten_thread_exit"](ex.status)}}else{throw ex}}}}else if(e.data.cmd==="cancel"){if(Module["_pthread_self"]()){Module["__emscripten_thread_exit"](-1)}}else if(e.data.target==="setimmediate"){}else if(e.data.cmd==="processProxyingQueue"){if(initializedJS){Module["executeNotifiedProxyingQueue"](e.data.queue)}else{pendingNotifiedProxyingQueues.push(e.data.queue)}}else if(e.data.cmd){err("worker.js received unknown command "+e.data.cmd);err(e.data)}}catch(ex){if(Module["__emscripten_thread_crashed"]){Module["__emscripten_thread_crashed"]()}throw ex}};`;
 },{}],"node_modules/@tensorflow/tfjs-backend-wasm/wasm-out/tfjs-backend-wasm.js":[function(require,module,exports) {
-var __filename = "/Users/amane/Documents/A++/AMANE/camera.amane.dev/node_modules/@tensorflow/tfjs-backend-wasm/wasm-out/tfjs-backend-wasm.js";
+var __filename = "/Users/amane/Documents/A++/AMANE/CAMERA/camera-filter/node_modules/@tensorflow/tfjs-backend-wasm/wasm-out/tfjs-backend-wasm.js";
 var process = require("process");
-var __dirname = "/Users/amane/Documents/A++/AMANE/camera.amane.dev/node_modules/@tensorflow/tfjs-backend-wasm/wasm-out";
+var __dirname = "/Users/amane/Documents/A++/AMANE/CAMERA/camera-filter/node_modules/@tensorflow/tfjs-backend-wasm/wasm-out";
 var define;
 
 var WasmBackendModule = (() => {
@@ -94530,6 +94530,7 @@ class Camera {
     this.video = document.getElementById('video');
     this.canvas = document.getElementById('output');
     this.ctx = this.canvas.getContext('2d');
+    console.log("Camera ", this.video, this.canvas, this.ctx);
   }
 
   /**
@@ -94537,39 +94538,43 @@ class Camera {
    * @param cameraParam From app `STATE.camera`.
    */
   static async setupCamera(cameraParam) {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      throw new Error('Browser API navigator.mediaDevices.getUserMedia not available');
-    }
-    const {
-      targetFPS,
-      sizeOption
-    } = cameraParam;
-    const $size = _params.VIDEO_SIZE[sizeOption];
-    const videoConfig = {
-      'audio': false,
-      'video': {
-        facingMode: 'user',
-        // Only setting the video to a specified size for large screen, on
-        // mobile devices accept the default size.
-        // width: isMobile() ? VIDEO_SIZE['360 X 270'].width : $size.width,
-        // height: isMobile() ? VIDEO_SIZE['360 X 270'].height : $size.height,
-        width: $size.width,
-        height: $size.height,
-        // width: 360,
-        // height: 270,
-        frameRate: {
-          ideal: targetFPS
-        }
-      }
-    };
-    const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
+    // if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    //   throw new Error(
+    //       'Browser API navigator.mediaDevices.getUserMedia not available');
+    // }
+
+    // const {targetFPS, sizeOption} = cameraParam;
+    // const $size = VIDEO_SIZE[sizeOption];
+
+    // const videoConfig = {
+    //   'audio': false,
+    //   'video': {
+    //     facingMode: 'user',
+    //     // Only setting the video to a specified size for large screen, on
+    //     // mobile devices accept the default size.
+    //     // width: isMobile() ? VIDEO_SIZE['360 X 270'].width : $size.width,
+    //     // height: isMobile() ? VIDEO_SIZE['360 X 270'].height : $size.height,
+    //     width: $size.width,
+    //     height: $size.height,
+    //     // width: 360,
+    //     // height: 270,
+    //     frameRate: {
+    //       ideal: targetFPS,
+    //     },
+    //   },
+    // };
+
+    // const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
+
     const camera = new Camera();
-    camera.video.srcObject = stream;
-    await new Promise(resolve => {
-      camera.video.onloadedmetadata = () => {
-        resolve(video);
-      };
-    });
+    // camera.video.srcObject = stream;
+
+    // await new Promise((resolve) => {
+    //   camera.video.onloadedmetadata = () => {
+    //     resolve(video);
+    //   };
+    // });
+
     camera.video.play();
     const videoWidth = camera.video.videoWidth;
     const videoHeight = camera.video.videoHeight;
@@ -94585,6 +94590,9 @@ class Camera {
     return camera;
   }
   drawCtx() {
+    console.log('====================================');
+    console.log("drawCtx");
+    console.log('====================================');
     this.ctx.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
   }
   drawResults(faces, triangulateMesh, boundingBox) {
@@ -94969,7 +94977,6 @@ let inferenceTimeSum = 0,
 let rafId;
 async function checkGuiUpdate() {
   if (_params.STATE.isTargetFPSChanged || _params.STATE.isSizeOptionChanged) {
-    camera = await _camera.Camera.setupCamera(_params.STATE.camera);
     _params.STATE.isTargetFPSChanged = false;
     _params.STATE.isSizeOptionChanged = false;
   }
@@ -95009,13 +95016,15 @@ function endEstimateFaceStats() {
   }
 }
 async function renderResult() {
-  if (camera.video.readyState < 2) {
-    await new Promise(resolve => {
-      camera.video.onloadeddata = () => {
-        resolve(video);
-      };
-    });
-  }
+  console.log("renderResult");
+  // if (camera.video.readyState < 2) {
+  //   await new Promise((resolve) => {
+  //     camera.video.onloadeddata = () => {
+  //       resolve(video);
+  //     };
+  //   });
+  // }
+
   let faces = null;
 
   // Detector can be null if initialization failed (for example when loading
@@ -95026,10 +95035,12 @@ async function renderResult() {
     // Detectors can throw errors, for example when using custom URLs that
     // contain a model that doesn't provide the expected output.
     try {
-      faces = await detector.estimateFaces(camera.video, {
+      faces =
+      // await detector.estimateFaces(camera.video, {flipHorizontal: false});
+      await detector.estimateFaces(document.getElementById('video'), {
         flipHorizontal: false
       });
-      // console.log("faces", faces)
+      console.log("faces", faces);
     } catch (error) {
       detector.dispose();
       detector = null;
@@ -95046,6 +95057,7 @@ async function renderResult() {
   }
 }
 async function renderPrediction() {
+  console.log("--renderPrediction");
   await checkGuiUpdate();
   if (!_params.STATE.isModelChanged) {
     await renderResult();
@@ -95054,11 +95066,17 @@ async function renderPrediction() {
 }
 ;
 async function app() {
+  console.log(">> app");
   // Gui content will change depending on which model is in the query string.
   const urlParams = new URLSearchParams(window.location.search);
   await (0, _option_panel.setupDatGui)(urlParams);
+  console.log(">> setupDatGui");
   camera = await _camera.Camera.setupCamera(_params.STATE.camera);
+  // camera = await Camera.setupCamera(STATE.camera);
+  console.log(">> camera");
   await (0, _util.setBackendAndEnvFlags)(_params.STATE.flags, _params.STATE.backend);
+  console.log(">> backendEnv");
+  console.log(">> detector");
   detector = await (0, _params.createDetector)();
   console.log("detector", detector);
   renderPrediction();

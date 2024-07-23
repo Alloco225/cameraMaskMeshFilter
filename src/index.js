@@ -39,7 +39,6 @@ let rafId;
 
 async function checkGuiUpdate() {
   if (STATE.isTargetFPSChanged || STATE.isSizeOptionChanged) {
-    camera = await Camera.setupCamera(STATE.camera);
     STATE.isTargetFPSChanged = false;
     STATE.isSizeOptionChanged = false;
   }
@@ -90,13 +89,14 @@ function endEstimateFaceStats() {
 }
 
 async function renderResult() {
-  if (camera.video.readyState < 2) {
-    await new Promise((resolve) => {
-      camera.video.onloadeddata = () => {
-        resolve(video);
-      };
-    });
-  }
+  console.log("renderResult")
+  // if (camera.video.readyState < 2) {
+  //   await new Promise((resolve) => {
+  //     camera.video.onloadeddata = () => {
+  //       resolve(video);
+  //     };
+  //   });
+  // }
 
   let faces = null;
 
@@ -108,18 +108,19 @@ async function renderResult() {
     // Detectors can throw errors, for example when using custom URLs that
     // contain a model that doesn't provide the expected output.
     try {
-      faces =
-          await detector.estimateFaces(camera.video, {flipHorizontal: false});
-          // console.log("faces", faces)
+      faces = 
+        // await detector.estimateFaces(camera.video, {flipHorizontal: false});
+        await detector.estimateFaces(document.getElementById('video'), {flipHorizontal: false});
+        console.log("faces", faces)
     } catch (error) {
       detector.dispose();
       detector = null;
       alert(error);
     }
-
   }
 
   camera.drawCtx();
+
 
   // The null check makes sure the UI is not in the middle of changing to a
   // different model. If during model change, the result is from an old model,
@@ -132,6 +133,7 @@ async function renderResult() {
 }
 
 async function renderPrediction() {
+  console.log("--renderPrediction")
   await checkGuiUpdate();
 
   if (!STATE.isModelChanged) {
@@ -142,15 +144,20 @@ async function renderPrediction() {
 };
 
 async function app() {
+  console.log(">> app")
   // Gui content will change depending on which model is in the query string.
   const urlParams = new URLSearchParams(window.location.search);
 
   await setupDatGui(urlParams);
-
+  console.log(">> setupDatGui")
   camera = await Camera.setupCamera(STATE.camera);
+  // camera = await Camera.setupCamera(STATE.camera);
+  console.log(">> camera")
 
   await setBackendAndEnvFlags(STATE.flags, STATE.backend);
-
+  console.log(">> backendEnv")
+  
+  console.log(">> detector")
   detector = await createDetector();
   console.log("detector", detector)
 
